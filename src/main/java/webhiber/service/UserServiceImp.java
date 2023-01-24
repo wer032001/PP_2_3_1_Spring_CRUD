@@ -1,15 +1,12 @@
 package webhiber.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import webhiber.dao.UserDao;
 import webhiber.model.User;
 
 import java.util.List;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class UserServiceImp implements UserService {
 
     private final UserDao userDao;
@@ -18,15 +15,14 @@ public class UserServiceImp implements UserService {
         this.userDao = userDao;
     }
 
-
     @Override
     public void addUser(User user) {
         this.userDao.addUser(user);
     }
 
     @Override
-    public User updateUser(User user) {
-       return this.userDao.updateUser(user);
+    public User updateUser(User user, long id) {
+       return this.userDao.updateUser(user, id);
     }
 
     @Override
@@ -43,5 +39,4 @@ public class UserServiceImp implements UserService {
     public List<User> listUsers() {
         return this.userDao.listUsers();
     }
-
 }

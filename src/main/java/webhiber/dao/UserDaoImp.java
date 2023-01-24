@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 import webhiber.config.AppConfig;
 import webhiber.model.User;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -24,19 +23,25 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public User updateUser(User user) {
-       return appConfig.createEntityManager().merge(user);
+    public User updateUser(User user, long id) {
+        appConfig.createEntityManager().getTransaction().begin();
+        getUserById(id);
+        appConfig.createEntityManager().merge(user);
+        appConfig.createEntityManager().getTransaction().commit();
+        return user;
     }
 
     @Override
     public void removeUser(long id) {
+        appConfig.createEntityManager().getTransaction().begin();
         User user = appConfig.createEntityManager().find(User.class, id);
         appConfig.createEntityManager().remove(user);
+        appConfig.createEntityManager().getTransaction().commit();
     }
 
     @Override
     public User getUserById(long id) {
-       return appConfig.createEntityManager().find(User.class, id);
+        return appConfig.createEntityManager().find(User.class, id);
     }
 
     @Override

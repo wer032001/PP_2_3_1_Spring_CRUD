@@ -3,11 +3,11 @@ package webhiber.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import webhiber.model.User;
 import webhiber.service.UserService;
-import webhiber.service.UserServiceImp;
 
 @Controller
 public class UserController {
@@ -18,17 +18,35 @@ public class UserController {
         this.userService = userService;
     }
 
+
+    @PostMapping("/users")
+    public String addUser(@ModelAttribute("user") User user) {
+        userService.addUser(user);
+        return "redirect:/users";
+    }
+
     @GetMapping("/users")
-    public String showUsers(Model model) {
+    public String getUsers(Model model) {
         model.addAttribute("users", userService.listUsers());
+        model.addAttribute("user", new User());
         return "users";
     }
 
-    @PostMapping("/addUser")
-    public String addUser(Model model) {
-        User user = new User();
-        user.setFirstName("BOB");
-        userService.addUser(user);
+    @GetMapping("/users/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.removeUser(id);
         return "redirect:/users";
+    }
+
+    @PostMapping("/users/{id}")
+    public String updateUser(@PathVariable Long id, @ModelAttribute("user") User user) {
+        userService.updateUser(user, id);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/users/edit/{id}")
+    public String updateUserForm(@PathVariable Long id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "updateuser";
     }
 }

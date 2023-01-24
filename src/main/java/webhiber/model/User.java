@@ -20,14 +20,6 @@ public class User {
     public User() {
     }
 
-    public User(long id, String firstName, String lastName, int age, String email) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.email = email;
-    }
-
     public Long getId() {
         return id;
     }
