@@ -22,7 +22,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User updateUser(User user, long id) {
-       return this.userDao.updateUser(user, id);
+        return this.userDao.updateUser(user, id);
     }
 
     @Override
